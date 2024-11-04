@@ -56,7 +56,7 @@ public class ForumThread extends BaseEntity {
         this.content = content;
     }
 
-    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

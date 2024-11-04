@@ -2,6 +2,8 @@ package org.example.onlineforum.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "reactions")
 public class Reaction extends BaseEntity{
@@ -9,6 +11,7 @@ public class Reaction extends BaseEntity{
     private ThreadComment comment;
     private ForumThread thread;
     private boolean isLike;
+    private LocalDateTime createdOn;
 
     protected Reaction() {
     }
@@ -60,8 +63,17 @@ public class Reaction extends BaseEntity{
         return isLike;
     }
 
-    public void setLike(boolean like) {
+    private void setLike(boolean like) {
         isLike = like;
+    }
+
+    @Column(name = "created_on", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    private void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
     }
 
     @PrePersist

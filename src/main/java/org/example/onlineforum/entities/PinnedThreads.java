@@ -1,14 +1,14 @@
 package org.example.onlineforum.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class PinnedThreads extends BaseEntity{
     private ForumThread thread;
     private User user;
+    private LocalDateTime pinnedOn;
 
     protected PinnedThreads() {
     }
@@ -36,5 +36,14 @@ public class PinnedThreads extends BaseEntity{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Column(name = "pinned_on", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    public LocalDateTime getPinnedOn() {
+        return pinnedOn;
+    }
+
+    public void setPinnedOn(LocalDateTime pinnedOn) {
+        this.pinnedOn = pinnedOn;
     }
 }

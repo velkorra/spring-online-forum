@@ -1,7 +1,7 @@
 package org.example.onlineforum.dto;
 
 import org.example.onlineforum.entities.User;
-import org.example.onlineforum.entities.enums.Role;
+import org.example.onlineforum.constants.Role;
 
 import java.time.LocalDateTime;
 

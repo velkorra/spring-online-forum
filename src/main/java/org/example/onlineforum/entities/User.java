@@ -1,7 +1,7 @@
 package org.example.onlineforum.entities;
 
 import jakarta.persistence.*;
-import org.example.onlineforum.entities.enums.Role;
+import org.example.onlineforum.constants.Role;
 
 import java.time.LocalDateTime;
 import java.util.Set;

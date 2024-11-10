@@ -1,4 +1,4 @@
-package org.example.onlineforum.entities.enums;
+package org.example.onlineforum.constants;
 
 public enum Role {
     USER,

@@ -2,7 +2,7 @@ package org.example.onlineforum;
 
 import jakarta.transaction.Transactional;
 import org.example.onlineforum.entities.*;
-import org.example.onlineforum.entities.enums.Role;
+import org.example.onlineforum.constants.Role;
 import org.example.onlineforum.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

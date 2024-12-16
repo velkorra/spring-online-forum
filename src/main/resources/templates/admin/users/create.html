@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head}"></head>
+<body class="bg-light h-100">
+<header th:replace="~{/fragments/header}"></header>
+
+<main class="container h-100 d-flex justify-content-center align-items-center">
+    <form th:action="@{/admin/users}"
+          th:method="post"
+          th:object="${form}"
+          class="m-md-auto w-30 pb-3">
+
+        <h2 class="h2 text-center">Создание пользователя</h2>
+        <div class="mb-3">
+            <label class="form-label" for="email">Email</label>
+            <input th:field="*{email}"
+                   th:errorclass="is-invalid"
+                   type="email"
+                   class="form-control"
+                   id="email"/>
+            <small th:if="${#fields.hasErrors('email')}"
+                   th:errors="*{email}"
+                   class="text-danger">Error message</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="username">Username</label>
+            <input th:field="*{username}"
+                   th:errorclass="is-invalid"
+                   type="text"
+                   class="form-control"
+                   id="username"/>
+            <small th:if="${#fields.hasErrors('username')}"
+                   th:errors="*{username}"
+                   class="text-danger">Error message</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="password">Password</label>
+            <input th:field="*{password}"
+                   th:errorclass="is-invalid"
+                   type="password"
+                   class="form-control"
+                   id="password"/>
+            <small th:if="${#fields.hasErrors('password')}"
+                   th:errors="*{password}"
+                   class="text-danger">Error message</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="role">Role</label>
+            <select th:field="*{role}"
+                    th:errorclass="is-invalid"
+                    class="form-select"
+                    id="role">
+                <option value="USER">Пользователь</option>
+                <option value="ADMIN">Администратор</option>
+                <option value="MODERATOR">Модератор</option>
+            </select>
+            <small th:if="${#fields.hasErrors('role')}"
+                   th:errors="*{role}"
+                   class="text-danger">Error message</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="displayName">Display Name</label>
+            <input th:field="*{displayName}"
+                   th:errorclass="is-invalid"
+                   type="text"
+                   class="form-control"
+                   id="displayName"/>
+            <small th:if="${#fields.hasErrors('displayName')}"
+                   th:errors="*{displayName}"
+                   class="text-danger">Error message</small>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-success btn-lg">Создать пользователя</button>
+        </div>
+    </form>
+</main>
+<footer th:replace="~{fragments/footer}"/>
+</body>
+</html>

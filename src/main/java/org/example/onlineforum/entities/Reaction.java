@@ -7,35 +7,35 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "reactions")
 public class Reaction extends BaseEntity{
-    private User user;
+    private User author;
     private ThreadComment comment;
     private ForumThread thread;
-    private boolean isLike;
+    private Boolean like;
     private LocalDateTime createdOn;
 
     protected Reaction() {
     }
 
-    public Reaction(User user, ThreadComment comment, boolean isLike) {
-        this.user = user;
+    public Reaction(User author, ThreadComment comment, Boolean isLike) {
+        this.author = author;
         this.comment = comment;
-        this.isLike = isLike;
+        this.like = isLike;
     }
 
-    public Reaction(User user, ForumThread thread, boolean isLike) {
-        this.user = user;
+    public Reaction(User author, ForumThread thread, Boolean isLike) {
+        this.author = author;
         this.thread = thread;
-        this.isLike = isLike;
+        this.like = isLike;
     }
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_user_reaction"))
-    public User getUser() {
-        return user;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAuthor(User user) {
+        this.author = user;
     }
 
     @ManyToOne
@@ -59,12 +59,12 @@ public class Reaction extends BaseEntity{
     }
 
     @Column(name = "is_like", nullable = false)
-    public boolean isLike() {
-        return isLike;
+    public Boolean isLike() {
+        return like;
     }
 
     private void setLike(boolean like) {
-        isLike = like;
+        this.like = like;
     }
 
     @Column(name = "created_on", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

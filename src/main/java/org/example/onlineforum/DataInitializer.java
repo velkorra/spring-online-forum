@@ -1,17 +1,16 @@
 package org.example.onlineforum;
 
 import jakarta.transaction.Transactional;
+import org.example.onlineforum.constants.UserRoles;
 import org.example.onlineforum.entities.*;
-import org.example.onlineforum.constants.Role;
 import org.example.onlineforum.repositories.*;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+//@Component
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
@@ -43,7 +42,7 @@ public class DataInitializer implements CommandLineRunner {
                 "admin123",
                 "admin@forum.com",
                 "Administrator",
-                Role.ADMIN
+                UserRoles.ADMIN
         );
 
         User user1 = new User(
@@ -51,7 +50,7 @@ public class DataInitializer implements CommandLineRunner {
                 "pass123",
                 "john@example.com",
                 "John Doe",
-                Role.USER
+                org.example.onlineforum.constants.UserRoles.USER
         );
 
         User user2 = new User(
@@ -59,7 +58,7 @@ public class DataInitializer implements CommandLineRunner {
                 "pass456",
                 "jane@example.com",
                 "Jane Doe",
-                Role.USER
+                org.example.onlineforum.constants.UserRoles.USER
         );
 
         List<User> users = userRepository.createAll(Arrays.asList(admin, user1, user2));

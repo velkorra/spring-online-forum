@@ -1,7 +1,7 @@
 package org.example.onlineforum.entities;
 
 import jakarta.persistence.*;
-import org.example.onlineforum.constants.Role;
+import org.example.onlineforum.constants.UserRoles;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -13,8 +13,9 @@ public class User extends BaseEntity {
     private String password;
     private String email;
     private String displayName;
-    private Role role;
+    private UserRoles role;
     private LocalDateTime createdOn;
+    private Boolean isDeleted;
     private Set<ForumThread> forumThreads;
     private Set<ThreadComment> threadComments;
     private Set<Reaction> reactions;
@@ -23,7 +24,7 @@ public class User extends BaseEntity {
     protected User() {
     }
 
-    public User(String username, String password, String email, String displayName, Role role) {
+    public User(String username, String password, String email, String displayName, UserRoles role) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -69,17 +70,26 @@ public class User extends BaseEntity {
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    public Role getRole() {
+    public UserRoles getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(UserRoles role) {
         this.role = role;
     }
 
     @Column(name = "created_on", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     public LocalDateTime getCreatedOn() {
         return createdOn;
+    }
+
+    @Column(name = "is_deleted", nullable = false, insertable = false)
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public void setCreatedOn(LocalDateTime createdOn) {
@@ -104,7 +114,7 @@ public class User extends BaseEntity {
         this.threadComments = threadComments;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "author")
     public Set<Reaction> getReactions() {
         return reactions;
     }

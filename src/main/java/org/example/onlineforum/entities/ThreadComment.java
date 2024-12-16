@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "thread_comments")
-public class ThreadComment extends BaseEntity{
+public class ThreadComment extends BaseEntity {
     private User author;
     private String content;
     private ForumThread thread;
@@ -15,6 +15,7 @@ public class ThreadComment extends BaseEntity{
     private Set<Reaction> reactions;
     private ThreadComment parentComment;
     private Set<ThreadComment> replies;
+    private Boolean isDeleted;
 
     protected ThreadComment() {
     }
@@ -25,7 +26,14 @@ public class ThreadComment extends BaseEntity{
         this.thread = thread;
     }
 
-    @ManyToOne( optional = false)
+    public ThreadComment(User author, String content, ForumThread thread, ThreadComment parentComment) {
+        this.author = author;
+        this.content = content;
+        this.thread = thread;
+        this.parentComment = parentComment;
+    }
+
+    @ManyToOne(optional = false)
     @JoinColumn(name = "author_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_user_comment"))
     public User getAuthor() {
         return author;
@@ -44,7 +52,7 @@ public class ThreadComment extends BaseEntity{
         this.content = content;
     }
 
-    @ManyToOne( optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "thread_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_thread_comment"))
     public ForumThread getThread() {
         return thread;
@@ -59,6 +67,14 @@ public class ThreadComment extends BaseEntity{
         return createdAt;
     }
 
+    @Column(name = "is_deleted", nullable = false, insertable = false)
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }

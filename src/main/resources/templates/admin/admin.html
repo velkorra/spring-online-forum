@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head}"></head>
+<body class="d-flex flex-column h-100">
+<header th:replace="~{/fragments/header}"></header>
+
+<div class="container d-flex justify-content-center align-items-center h-100">
+    <div class="text-center">
+        <h1 class="mb-4">Админ Панель</h1>
+        <div class="list-group">
+            <a th:href="@{/admin/users}" class="list-group-item list-group-item-action">Пользователи</a>
+            <a th:href="@{/admin/threads}" class="list-group-item list-group-item-action">Треды</a>
+            <a th:href="@{/admin/comments}" class="list-group-item list-group-item-action">Комментарии</a>
+            <a th:href="@{/admin/reactions}" class="list-group-item list-group-item-action">Реакции</a>
+            <a th:href="@{/admin/categories}" class="list-group-item list-group-item-action">Категории</a>
+        </div>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer}"/>
+</body>
+</html>

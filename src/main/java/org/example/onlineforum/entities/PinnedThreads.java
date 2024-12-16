@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class PinnedThreads extends BaseEntity{
+@Table(name = "pinned_threads")
+public class PinnedThreads extends BaseEntity {
     private ForumThread thread;
     private User user;
     private LocalDateTime pinnedOn;
@@ -19,7 +20,7 @@ public class PinnedThreads extends BaseEntity{
     }
 
     @ManyToOne(optional = false)
-    @JoinColumn( name = "thread_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_thread_pinned"))
+    @JoinColumn(name = "thread_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_thread_pinned"))
     public ForumThread getThread() {
         return thread;
     }
@@ -29,7 +30,7 @@ public class PinnedThreads extends BaseEntity{
     }
 
     @ManyToOne(optional = false)
-    @JoinColumn( name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_user_pinned"))
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_user_pinned"))
     public User getUser() {
         return user;
     }

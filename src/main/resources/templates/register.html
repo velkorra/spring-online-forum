@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head}"></head>
+<body class="bg-light h-100">
+<header class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Регистрация</a>
+    </div>
+</header>
+
+<main class="container h-100 d-flex justify-content-center align-items-center">
+    <form th:action="@{/register}"
+          th:method="post"
+          th:object="${form}"
+          class="m-md-auto w-30 pb-3">
+
+        <h2 class="h2 text-center mb-4">Регистрация</h2>
+
+        <div class="mb-3">
+            <label class="form-label" for="username">Имя пользователя</label>
+            <input th:field="*{username}"
+                   th:errorclass="is-invalid"
+                   type="text"
+                   class="form-control"
+                   id="username"
+                   placeholder="Придумайте имя пользователя"/>
+            <small th:if="${#fields.hasErrors('username')}"
+                   th:errors="*{username}"
+                   class="text-danger">Error message</small>
+            <small th:if="${usernameTaken}"
+                   class="text-danger">Имя пользователя уже занято</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="email">Email</label>
+            <input th:field="*{email}"
+                   th:errorclass="is-invalid"
+                   type="email"
+                   class="form-control"
+                   id="email"
+                   placeholder="Ваш Email"/>
+            <small th:if="${#fields.hasErrors('email')}"
+                   th:errors="*{email}"
+                   class="text-danger">Error message</small>
+            <small th:if="${emailTaken}"
+                   class="text-danger">Email уже зарегистрирован</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="password">Придумайте пароль</label>
+            <input th:field="*{password}"
+                   th:errorclass="is-invalid"
+                   type="password"
+                   class="form-control"
+                   id="password"
+                   placeholder="Пароль"/>
+            <small th:if="${#fields.hasErrors('password')}"
+                   th:errors="*{password}"
+                   class="text-danger">Error message</small>
+            <small th:if="${#fields.hasErrors('passwordMatch')}"
+                   th:errors="*{passwordMatch}"
+                   class="text-danger">Error message</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="confirmPassword">Подтвердите пароль</label>
+            <input th:field="*{confirmPassword}"
+                   th:errorclass="is-invalid"
+                   type="password"
+                   class="form-control"
+                   id="confirmPassword"
+                   placeholder="Подтверждение пароля"/>
+            <small th:if="${#fields.hasErrors('confirmPassword')}"
+                   th:errors="*{confirmPassword}"
+                   class="text-danger">Error message</small>
+            <small th:if="${#fields.hasErrors('passwordMatch')}"
+                   th:errors="*{passwordMatch}"
+                   class="text-danger">Error message</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="displayName">Укажите, как вы хотите отображаться на сайте</label>
+            <input th:field="*{displayName}"
+                   th:errorclass="is-invalid"
+                   type="text"
+                   class="form-control"
+                   id="displayName"
+                   placeholder="Ваше имя"/>
+            <small th:if="${#fields.hasErrors('displayName')}"
+                   th:errors="*{displayName}"
+                   class="text-danger">Error message</small>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary btn-lg">Зарегистрироваться</button>
+        </div>
+    </form>
+</main>
+<footer th:replace="~{/fragments/footer}"/>
+</body>
+</html>

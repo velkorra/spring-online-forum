@@ -14,6 +14,7 @@ public class ForumThread extends BaseEntity {
     private LocalDateTime createdAt;
     private int viewsCount;
     private Category category;
+    private Boolean isDeleted;
     private Set<Reaction> reactions;
     private Set<ThreadComment> comments;
     private Set<PinnedThreads> userPins;
@@ -74,6 +75,14 @@ public class ForumThread extends BaseEntity {
         this.viewsCount = viewsCount;
     }
 
+    @Column(name = "is_deleted", nullable = false, insertable = false)
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_category_thread"))
     public Category getCategory() {
@@ -110,4 +119,6 @@ public class ForumThread extends BaseEntity {
     public void setUserPins(Set<PinnedThreads> userPins) {
         this.userPins = userPins;
     }
+
+
 }

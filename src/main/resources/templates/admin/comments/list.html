@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{/fragments/head}"></head>
+
+<body class="bg-light">
+<header th:replace="~{/fragments/header}"></header>
+
+
+<main class="container" style="margin-top: 100px; margin-bottom: 100px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between">
+            <h1 class="h3 mb-0">Список комментариев</h1>
+            <a th:href="@{/admin/comments/create}"
+               class="btn btn-success btn-lg">
+                <i class="bi bi-plus"></i> Создать комментарий
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col">Автор</th>
+                        <th scope="col">Комментарий</th>
+                        <th scope="col">Дата создания</th>
+                        <th scope="col" class="text-center">Реакции</th>
+                        <th scope="col" class="text-center">Лайков</th>
+                        <th scope="col" class="text-center">Дизлайков</th>
+                        <th scope="col" class="text-center">Ответов</th>
+                        <th scope="col" class="text-center">Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="comment, iterStat : ${comments}">
+                        <td class="text-center" th:text="${iterStat.index + 1}"></td>
+                        <td>
+                            <span th:text="${comment.authorDisplayName}"></span>
+                            (<span th:text="${comment.authorUsername}"></span>)
+                        </td>
+                        <td th:text="${comment.content}"></td>
+                        <td th:text="${#dates.format(comment.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                        <td class="text-center" th:text="${comment.reactionsCount}"></td>
+                        <td class="text-center" th:text="${comment.likesCount}"></td>
+                        <td class="text-center" th:text="${comment.dislikesCount}"></td>
+                        <td class="text-center" th:text="${comment.repliesCount}"></td>
+                        <td class="text-center d-flex justify-content-around">
+                            <a th:href="@{/admin/comments/update/{id}(id=${comment.id})}"
+                               class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil"></i> Редактировать
+                            </a>
+                            <form th:action="@{/admin/comments/{id}(id=${comment.id})}" method="post" th:object="${comment}" th:method="delete">
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Вы уверены, что хотите удалить этот комментарий?');">
+                                    <i class="bi bi-trash"></i> Удалить
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <nav th:if="${comments.totalPages > 1}" aria-label="Навигация по страницам">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${pageable.pageNumber == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/comments(page=${comments.number} - 1, size=${comments.size})}" aria-label="Предыдущая">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"
+                        th:each="pageNumber : ${#numbers.sequence(1, comments.totalPages)}"
+                        th:classappend="${pageNumber == comments.number + 1} ? 'active'">
+                        <a class="page-link" th:href="@{/admin/comments(page=${pageNumber}, size=${comments.size})}" th:text="${pageNumber}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${pageable.pageNumber > comments.totalPages} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/comments(page=${comments.number} + 1, size=${comments.size})}" aria-label="Следующая">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{/fragments/footer}"></footer>
+
+</body>
+</html>

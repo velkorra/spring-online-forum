@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{/fragments/head}"></head>
+<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+<header th:replace="~{/fragments/header}"></header>
+<main class="card w-75">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Создание темы</h5>
+    </div>
+    <div class="card-body">
+        <form th:action="@{/thread/new}" th:method="post" th:object="${form}">
+
+            <div class="mb-3">
+                <label for="category" class="form-label">Категория</label>
+                <select id="category" name="category" class="form-select" required>
+                    <option value="" disabled selected>Выберите категорию</option>
+                    <option th:each="category : ${categories}" th:value="${category.id}"
+                            th:text="${category.name}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="title">Название темы</label>
+                <input th:field="*{title}"
+                       th:errorclass="is-invalid"
+                       type="text"
+                       class="form-control"
+                       id="title"
+                       placeholder="Введите название темы"/>
+                <small th:if="${#fields.hasErrors('title')}"
+                       th:errors="*{title}"
+                       class="text-danger">Error message</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="content">Текст темы</label>
+                <textarea th:field="*{content}"
+                          th:errorclass="is-invalid"
+                          class="form-control"
+                          id="content"
+                          rows="6"
+                          placeholder="Напишите текст темы"></textarea>
+                <small th:if="${#fields.hasErrors('content')}"
+                       th:errors="*{content}"
+                       class="text-danger">Error message</small>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success">Создать тему</button>
+            </div>
+        </form>
+    </div>
+</main>
+<footer th:replace="~{/fragments/footer}"></footer>
+</body>
+</html>

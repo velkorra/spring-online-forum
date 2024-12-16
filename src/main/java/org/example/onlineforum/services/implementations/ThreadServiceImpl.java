@@ -13,12 +13,14 @@ import org.example.onlineforum.exceptions.CategoryNotFoundException;
 import org.example.onlineforum.exceptions.ThreadNotFoundException;
 import org.example.onlineforum.exceptions.UserNotFoundException;
 import org.example.onlineforum.projections.ThreadProjection;
+import org.example.onlineforum.projections.dto.ThreadProjectionDto;
 import org.example.onlineforum.repositories.CategoryRepository;
 import org.example.onlineforum.repositories.ForumThreadRepository;
 import org.example.onlineforum.repositories.search.ThreadSearchRepository;
 import org.example.onlineforum.repositories.UserRepository;
 import org.example.onlineforum.services.ForumThreadService;
 import org.forum.forumcontracts.filters.ForumThreadFilter;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
@@ -57,6 +59,7 @@ public class ThreadServiceImpl implements ForumThreadService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "threads", allEntries = true)
     public void createThread(ThreadCreateDro thread) {
         Category category = categoryRepository.findById(thread.category()).orElseThrow(
                 () -> new CategoryNotFoundException(thread.category())
@@ -69,6 +72,7 @@ public class ThreadServiceImpl implements ForumThreadService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "threads", allEntries = true)
     public void createThread(String username, NewThreadDto thread) {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new UserNotFoundException("User with username " + username + " not found")
@@ -82,6 +86,7 @@ public class ThreadServiceImpl implements ForumThreadService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "threads", allEntries = true)
     public void updateThread(ThreadUpdateDto thread) {
         ForumThread existingThread = threadRepository.findById(thread.id())
                 .orElseThrow(() -> new ThreadNotFoundException("Thread with id " + thread.id() + " not found"));
@@ -98,8 +103,8 @@ public class ThreadServiceImpl implements ForumThreadService {
 
     @Override
     @Cacheable("threads")
-    public Page<ThreadProjection> searchThreads(ForumThreadFilter filter, Pageable pageable) {
-        return new RestPage<>(threadSearchRepository.searchForumThreads(filter, pageable));
+    public Page<ThreadProjectionDto> searchThreads(ForumThreadFilter filter, Pageable pageable) {
+        return new RestPage<>(threadSearchRepository.searchForumThreads(filter, pageable).map(ThreadProjectionDto::new));
     }
 
     @Override
@@ -114,6 +119,7 @@ public class ThreadServiceImpl implements ForumThreadService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"comments", "threads"}, allEntries = true)
     public void markDeleted(String id) {
         ForumThread forumThread = threadRepository.findById(id).orElseThrow(
                 () -> new ThreadNotFoundException("Thread with id " + id + " not found")

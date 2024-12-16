@@ -4,6 +4,7 @@ import org.example.onlineforum.dto.NewThreadDto;
 import org.example.onlineforum.dto.ThreadUpdateDto;
 import org.example.onlineforum.dto.mappers.ForumThreadMapper;
 import org.example.onlineforum.projections.ThreadProjection;
+import org.example.onlineforum.projections.dto.ThreadProjectionDto;
 import org.example.onlineforum.utils.DateConverter;
 import org.forum.forumcontracts.input.NewThreadForm;
 import org.forum.forumcontracts.input.ThreadEditForm;
@@ -18,7 +19,7 @@ import java.util.List;
 @Component
 public class ForumThreadMapperImpl implements ForumThreadMapper {
 
-    public ForumThreadViewModel toViewModel(ThreadProjection projection) {
+    public ForumThreadViewModel toViewModel(ThreadProjectionDto projection) {
         return new ForumThreadViewModel(
                 projection.getId(),
                 projection.getTitle(),
@@ -59,7 +60,7 @@ public class ForumThreadMapperImpl implements ForumThreadMapper {
     }
 
     @Override
-    public ForumThreadWithCommentsViewModel toViewModel(ThreadProjection projection, List<ThreadCommentViewModel> comments) {
+    public ForumThreadWithCommentsViewModel toViewModel(ThreadProjectionDto projection, List<ThreadCommentViewModel> comments) {
         return new ForumThreadWithCommentsViewModel(
                 projection.getId(),
                 projection.getTitle(),

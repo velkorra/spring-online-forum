@@ -4,6 +4,7 @@ import org.example.onlineforum.dto.UserDto;
 import org.example.onlineforum.dto.UserCreateDto;
 import org.example.onlineforum.dto.UserRegistrationDto;
 import org.example.onlineforum.dto.UserUpdateDto;
+import org.example.onlineforum.projections.dto.UserProjectionDto;
 import org.forum.forumcontracts.filters.UserFilter;
 import org.example.onlineforum.projections.UserProjection;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,7 @@ public interface UserService {
 
     List<UserDto> getUsersByDisplayName(String name);
 
-    Page<UserProjection> getUsersWithCounts(UserFilter userFilter, Pageable pageable);
+    Page<UserProjectionDto> getUsersWithCounts(UserFilter userFilter, Pageable pageable);
 
     UserDto getUserByEmail(String email);
 

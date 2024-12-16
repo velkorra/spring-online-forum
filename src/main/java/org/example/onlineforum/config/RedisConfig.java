@@ -38,6 +38,9 @@ public class RedisConfig {
                 .cacheDefaults(cacheConfig)
                 .withCacheConfiguration("threads", myDefaultCacheConfig(Duration.ofMinutes(10)))
                 .withCacheConfiguration("comments", myDefaultCacheConfig(Duration.ofMinutes(10)))
+                .withCacheConfiguration("users", myDefaultCacheConfig(Duration.ofMinutes(10)))
+                .withCacheConfiguration("categories", myDefaultCacheConfig(Duration.ofMinutes(10)))
+                .withCacheConfiguration("category", myDefaultCacheConfig(Duration.ofMinutes(10)))
                 .build();
     }
 

@@ -1,26 +1,20 @@
 package org.example.onlineforum.controllers.admin;
 
 import jakarta.validation.Valid;
-import org.example.onlineforum.dto.UserCreateDto;
 import org.example.onlineforum.dto.UserUpdateDto;
 import org.example.onlineforum.dto.mappers.UserMapper;
 import org.forum.forumcontracts.filters.UserFilter;
-import org.example.onlineforum.projections.UserProjection;
 import org.example.onlineforum.services.UserService;
 import org.forum.forumcontracts.controllers.admin.UserAdminController;
 import org.forum.forumcontracts.input.UserCreateForm;
 import org.forum.forumcontracts.input.UserUpdateForm;
 import org.forum.forumcontracts.viewmodels.BaseViewModel;
-import org.forum.forumcontracts.viewmodels.FullUserViewModel;
 import org.forum.forumcontracts.viewmodels.HomeViewModel;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.ZoneId;
-import java.util.Date;
 
 @Controller
 @RequestMapping("admin/users")

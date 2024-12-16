@@ -17,7 +17,8 @@ public class ThreadCommentProjectionDto {
     private Integer likesCount;
     private Integer dislikesCount;
 
-    // Конструктор, принимающий ThreadCommentProjection
+    public ThreadCommentProjectionDto(){}
+
     public ThreadCommentProjectionDto(org.example.onlineforum.projections.ThreadCommentProjection projection) {
         this.id = projection.getId();
         this.authorUsername = projection.getAuthorUsername();

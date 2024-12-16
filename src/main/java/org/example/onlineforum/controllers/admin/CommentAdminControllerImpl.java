@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import org.example.onlineforum.dto.CommentCreateDto;
 import org.example.onlineforum.dto.CommentUpdateDto;
 import org.example.onlineforum.dto.mappers.CommentMapper;
-import org.example.onlineforum.projections.ThreadCommentProjection;
 import org.example.onlineforum.services.ThreadCommentService;
 import org.forum.forumcontracts.controllers.admin.CommentAdminController;
 import org.forum.forumcontracts.filters.ThreadCommentFilter;
@@ -12,15 +11,11 @@ import org.forum.forumcontracts.input.ThreadCommentCreateForm;
 import org.forum.forumcontracts.input.ThreadCommentUpdateForm;
 import org.forum.forumcontracts.viewmodels.BaseViewModel;
 import org.forum.forumcontracts.viewmodels.HomeViewModel;
-import org.forum.forumcontracts.viewmodels.ThreadCommentViewModel;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.ZoneId;
-import java.util.Date;
 
 @Controller
 @RequestMapping("/admin/comments")

@@ -10,11 +10,15 @@ import org.example.onlineforum.exceptions.CategoryNotFoundException;
 import org.example.onlineforum.repositories.CategoryRepository;
 import org.example.onlineforum.repositories.ForumThreadRepository;
 import org.example.onlineforum.services.CategoryService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@EnableCaching
 public class CategoryServiceImpl implements CategoryService {
     private final ForumThreadRepository forumThreadRepository;
     private final CategoryRepository categoryRepository;
@@ -30,6 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(value = "category", key = "name")
     public CategoryDto findByName(String name) {
         return new CategoryDto(categoryRepository.findByName(name).orElseThrow(
                 () -> new CategoryNotFoundException("Category \"" + name + "\" does not exist ")
@@ -56,6 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"categories", "category"}, allEntries = true)
     public void deleteCategoryIfEmpty(String categoryName) {
         Category category = categoryRepository.findByName(categoryName).orElseThrow(
                 () -> new CategoryNotFoundException("Category \"" + categoryName + "\" does not exist.")
@@ -71,6 +77,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"categories", "category"}, allEntries = true)
     public void createCategory(CategoryCreateDto category) {
         if (categoryRepository.existsByName(category.name())) {
             throw new CategoryExistsException("Category \"" + category.name() + "\" already exists");
@@ -80,6 +87,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"categories", "category"}, allEntries = true)
     public void updateName(CategoryDto categoryDto) {
         Category category = categoryRepository.findById(categoryDto.id()).orElseThrow(
                 () -> new CategoryNotFoundException("Category with id " + categoryDto.id() + " does not exists")

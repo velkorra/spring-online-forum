@@ -5,6 +5,7 @@ import org.example.onlineforum.dto.ThreadCreateDro;
 import org.example.onlineforum.dto.ThreadDto;
 import org.example.onlineforum.dto.ThreadUpdateDto;
 import org.example.onlineforum.projections.ThreadProjection;
+import org.example.onlineforum.projections.dto.ThreadProjectionDto;
 import org.forum.forumcontracts.filters.ForumThreadFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,7 @@ public interface ForumThreadService {
 
     List<ThreadDto> getAllThreads();
 
-    Page<ThreadProjection> searchThreads(ForumThreadFilter filter, Pageable pageable);
+    Page<ThreadProjectionDto> searchThreads(ForumThreadFilter filter, Pageable pageable);
 
     void createThread(ThreadCreateDro thread);
     void createThread(String username, NewThreadDto thread);

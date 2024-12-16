@@ -4,13 +4,14 @@ import org.example.onlineforum.dto.mappers.CommentMapper;
 import org.example.onlineforum.dto.mappers.ForumThreadMapper;
 import org.example.onlineforum.dto.mappers.UserMapper;
 import org.example.onlineforum.projections.ThreadCommentProjection;
-import org.example.onlineforum.projections.ThreadProjection;
+import org.example.onlineforum.projections.dto.ThreadCommentProjectionDto;
+import org.example.onlineforum.projections.dto.ThreadProjectionDto;
+import org.example.onlineforum.projections.dto.UserProjectionDto;
 import org.example.onlineforum.services.ThreadCommentService;
 import org.example.onlineforum.services.ForumThreadService;
 import org.forum.forumcontracts.filters.ForumThreadFilter;
 import org.forum.forumcontracts.filters.ThreadCommentFilter;
 import org.forum.forumcontracts.filters.UserFilter;
-import org.example.onlineforum.projections.UserProjection;
 import org.example.onlineforum.services.UserService;
 import org.forum.forumcontracts.viewmodels.*;
 import org.springframework.data.domain.Page;
@@ -50,18 +51,18 @@ public class PageController {
     }
 
     @GetMapping("counts")
-    public Page<UserProjection> userWithCounts(@ModelAttribute UserFilter userFilter, Pageable pageable) {
+    public Page<UserProjectionDto> userWithCounts(@ModelAttribute UserFilter userFilter, Pageable pageable) {
         return userService.getUsersWithCounts(userFilter, pageable);
     }
 
 
     @GetMapping("threads")
-    public Page<ThreadProjection> searchThreads(ForumThreadFilter filter, Pageable pageable){
+    public Page<ThreadProjectionDto> searchThreads(ForumThreadFilter filter, Pageable pageable){
         return threadService.searchThreads(filter, pageable);
     }
 
     @GetMapping("comments")
-    public Page<ThreadCommentProjection> searchComments(ThreadCommentFilter filter, Pageable pageable){
+    public Page<ThreadCommentProjectionDto> searchComments(ThreadCommentFilter filter, Pageable pageable){
         return commentService.searchComments(filter, pageable);
     }
 

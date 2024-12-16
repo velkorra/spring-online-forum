@@ -5,7 +5,7 @@ import org.example.onlineforum.dto.UserDto;
 import org.example.onlineforum.dto.UserRegistrationDto;
 import org.example.onlineforum.dto.mappers.UserMapper;
 import org.example.onlineforum.entities.User;
-import org.example.onlineforum.projections.UserProjection;
+import org.example.onlineforum.projections.dto.UserProjectionDto;
 import org.example.onlineforum.utils.DateConverter;
 import org.forum.forumcontracts.input.UserCreateForm;
 import org.forum.forumcontracts.input.UserRegistrationForm;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapperImpl implements UserMapper {
-    public FullUserViewModel toViewModel(UserProjection user) {
+    public FullUserViewModel toViewModel(UserProjectionDto user) {
         return new FullUserViewModel(
                 user.getId(),
                 user.getUsername(),

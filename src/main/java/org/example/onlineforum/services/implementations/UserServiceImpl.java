@@ -1,6 +1,7 @@
 package org.example.onlineforum.services.implementations;
 
 import jakarta.transaction.Transactional;
+import org.example.onlineforum.config.RestPage;
 import org.example.onlineforum.constants.UserRoles;
 import org.example.onlineforum.dto.UserDto;
 import org.example.onlineforum.dto.UserCreateDto;
@@ -11,11 +12,14 @@ import org.example.onlineforum.entities.User;
 import org.example.onlineforum.exceptions.EmailAlreadyExistsException;
 import org.example.onlineforum.exceptions.UserNotFoundException;
 import org.example.onlineforum.exceptions.UsernameAlreadyExistsException;
+import org.example.onlineforum.projections.dto.UserProjectionDto;
 import org.example.onlineforum.repositories.search.UserSearchRepository;
 import org.forum.forumcontracts.filters.UserFilter;
 import org.example.onlineforum.projections.UserProjection;
 import org.example.onlineforum.repositories.UserRepository;
 import org.example.onlineforum.services.UserService;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@EnableCaching
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserSearchRepository userSearchRepository;
@@ -73,6 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable("users")
     public UserDto getUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User with username " + username + " not found"));
@@ -80,6 +86,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable("users")
     public List<UserDto> getUsersByDisplayName(String name) {
         return userRepository.findByDisplayName(name).stream().map(userMapper::toDto).toList();
     }
@@ -92,8 +99,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserProjection> getUsersWithCounts(UserFilter userFilter, Pageable pageable) {
-        return userSearchRepository.searchUsers(userFilter, pageable);
+    @Cacheable("users")
+    public Page<UserProjectionDto> getUsersWithCounts(UserFilter userFilter, Pageable pageable) {
+        return new RestPage<>(userSearchRepository.searchUsers(userFilter, pageable).map(UserProjectionDto::new));
     }
 
     @Override

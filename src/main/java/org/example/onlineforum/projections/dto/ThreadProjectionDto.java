@@ -18,6 +18,8 @@ public class ThreadProjectionDto {
     private int likesCount;
     private int dislikesCount;
 
+    public ThreadProjectionDto(){}
+
     public ThreadProjectionDto(org.example.onlineforum.projections.ThreadProjection projection) {
         this.id = projection.getId();
         this.title = projection.getTitle();

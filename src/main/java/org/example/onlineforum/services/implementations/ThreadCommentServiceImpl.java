@@ -1,6 +1,7 @@
 package org.example.onlineforum.services.implementations;
 
 import jakarta.transaction.Transactional;
+import org.example.onlineforum.config.RestPage;
 import org.example.onlineforum.dto.CommentCreateDto;
 import org.example.onlineforum.dto.CommentUpdateDto;
 import org.example.onlineforum.dto.NewCommentDto;
@@ -11,19 +12,23 @@ import org.example.onlineforum.entities.User;
 import org.example.onlineforum.exceptions.CommentNotFoundException;
 import org.example.onlineforum.exceptions.ThreadNotFoundException;
 import org.example.onlineforum.exceptions.UserNotFoundException;
-import org.example.onlineforum.projections.ThreadCommentProjection;
+import org.example.onlineforum.projections.dto.ThreadCommentProjectionDto;
 import org.example.onlineforum.repositories.search.CommentSearchRepository;
 import org.example.onlineforum.repositories.ForumThreadRepository;
 import org.example.onlineforum.repositories.ThreadCommentRepository;
 import org.example.onlineforum.repositories.UserRepository;
 import org.example.onlineforum.services.ThreadCommentService;
 import org.forum.forumcontracts.filters.ThreadCommentFilter;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 @Service
+@EnableCaching
 public class ThreadCommentServiceImpl implements ThreadCommentService {
     private final ThreadCommentRepository commentRepository;
     private final ForumThreadRepository threadRepository;
@@ -39,6 +44,7 @@ public class ThreadCommentServiceImpl implements ThreadCommentService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"comments", "threads"}, allEntries = true)
     public void createComment(CommentCreateDto commentCreateDto) {
         User author = userRepository.findById(commentCreateDto.authorId())
                 .orElseThrow(() -> new UserNotFoundException("User with id " + commentCreateDto.authorId() + " not found"));
@@ -57,6 +63,7 @@ public class ThreadCommentServiceImpl implements ThreadCommentService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"comments", "threads"}, allEntries = true)
     public void newComment(NewCommentDto newCommentDto) {
         User user = userRepository.findByUsername(newCommentDto.authorUsername()).orElseThrow(
                 () -> new ThreadNotFoundException("Thread with username " + newCommentDto.authorUsername() + " not found"));
@@ -68,6 +75,7 @@ public class ThreadCommentServiceImpl implements ThreadCommentService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"comments", "threads"}, allEntries = true)
     public void updateComment(CommentUpdateDto commentUpdateDto) {
         ThreadComment existingComment = commentRepository.findById(commentUpdateDto.id())
                 .orElseThrow(() -> new CommentNotFoundException("Comment with id " + commentUpdateDto.id() + " not found"));
@@ -92,12 +100,14 @@ public class ThreadCommentServiceImpl implements ThreadCommentService {
         }
     }
     @Override
-    public Page<ThreadCommentProjection> searchComments(ThreadCommentFilter filter, Pageable pageable) {
-        return commentSearchRepository.searchThreadComments(filter, pageable);
+    @Cacheable("comments")
+    public Page<ThreadCommentProjectionDto> searchComments(ThreadCommentFilter filter, Pageable pageable) {
+        return new RestPage<>(commentSearchRepository.searchThreadComments(filter, pageable).map(ThreadCommentProjectionDto::new));
     }
 
     @Override
     @Transactional
+    @CacheEvict(value = {"comments", "threads"}, allEntries = true)
     public void markDeleted(String id) {
         ThreadComment comment = commentRepository.findById(id).orElseThrow(
                 () -> new ThreadNotFoundException("Thread with id " + id + " not found"));

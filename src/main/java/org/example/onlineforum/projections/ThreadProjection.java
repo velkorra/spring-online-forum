@@ -1,8 +1,9 @@
 package org.example.onlineforum.projections;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public interface ThreadProjection {
+public interface ThreadProjection extends Serializable {
     String getId();
 
     String getTitle();
